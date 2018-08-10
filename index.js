@@ -73,18 +73,6 @@ function rewireVendorSplitting(config, env) {
 
   config.plugins.push(new webpack.NamedModulesPlugin());
 
-  config.plugins.push(
-    new webpack.NamedChunksPlugin(chunk => {
-      if (chunk.name) {
-        return chunk.name;
-      }
-      const chunkNames = chunk.mapModules(m => m);
-      chunkNames.sort((chunkA, chunkB) => chunkA.depth - chunkB.depth);
-      const fileName = chunkNames[0].resource;
-      return path.basename(fileName, path.extname(fileName));
-    })
-  );
-
   if (fs.existsSync(paths.appVendors)) {
     config.plugins.push(
       new webpack.optimize.CommonsChunkPlugin({
